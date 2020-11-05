@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>时钟</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            display: flex;
+            margin: 0;
+            background: linear-gradient(
+                135deg,
+                rgb(142, 132, 133) 0%,
+                rgb(230, 132, 110) 100%
+            );
+        }
+        canvas{
+            margin: auto;
+            background: #15131E;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="500" height="500"></canvas>
+    <script>
+        let oC = document.querySelector('canvas')
+        let cxt = oC.getContext('2d')
+        clock()
+        setInterval(clock,1000)
+        function clock() {
+            cxt.clearRect(0,0,500,500)
+            const oDate = new Date()
+            let oH = oDate.getHours()
+            const oM = oDate.getMinutes()
+            const oS = oDate.getSeconds()
+            oH = oH + oM / 60
+
+            // 1. 绘制表盘
+            cxt.beginPath()
+            cxt.lineWidth = 8
+            cxt.strokeStyle = 'green'
+            cxt.arc(250,250,200,0,360*Math.PI/180,false)
+            cxt.stroke()
+
+            // 刻度
+            /*
+            cxt.save()
+            cxt.beginPath()
+            cxt.lineWidth = 5
+            cxt.translate(250,250)
+            cxt.moveTo(0,-190)
+            cxt.lineTo(0,-180)
+            cxt.stroke()
+            cxt.restore()
+
+            cxt.save()
+            cxt.beginPath()
+            cxt.lineWidth = 5
+            cxt.translate(250,250)
+            cxt.rotate(30*Math.PI/180)
+            cxt.moveTo(0,-190)
+            cxt.lineTo(0,-180)
+            cxt.stroke()
+            cxt.restore()
+            */
+            // 时刻度
+            for (let i = 0; i < 12; i++) {
+                cxt.save()
+                cxt.beginPath()
+                cxt.lineWidth = 5
+                cxt.translate(250,250)
+                cxt.rotate(i*30*Math.PI/180)
+                cxt.moveTo(0,-200)
+                cxt.lineTo(0,-180)
+                cxt.stroke()
+                cxt.restore()
+            }
+
+            // 分刻度
+            for (let i = 0; i < 60; i++) {
+                cxt.save()
+                cxt.beginPath()
+                cxt.lineWidth = 2
+                cxt.translate(250,250)
+                cxt.rotate(i*6*Math.PI/180)
+                cxt.moveTo(0,-200)
+                cxt.lineTo(0,-190)
+                cxt.stroke()
+                cxt.restore()
+            }
+
+            // 绘制数字
+            cxt.save()
+            cxt.translate(250,250)
+            cxt.fillStyle = 'skyblue'
+            cxt.font = '14px 微软雅黑'
+            cxt.textAlign = 'center'
+            cxt.textBaseline = 'middle'
+            for (let i = 1; i < 13; i++) {
+                let x = Math.sin(i*30* Math.PI/180) *170
+                let y = -Math.cos(i*30*Math.PI/180) *170
+                cxt.fillText(i,x,y)
+            }
+            cxt.restore()
+
+
+            // 时针
+            cxt.save()
+            cxt.beginPath()
+            cxt.translate(250,250)
+            cxt.lineWidth = 5
+            cxt.rotate(oH * 30 * Math.PI/180)
+            cxt.moveTo(0,-120)
+            cxt.lineTo(0,0)
+            cxt.stroke()
+            cxt.restore()
+
+            // 分针
+            cxt.save()
+            cxt.beginPath()
+            cxt.translate(250,250)
+            cxt.lineWidth = 3
+            cxt.rotate(oM * 6 * Math.PI/180)
+            cxt.moveTo(0,0)
+            cxt.lineTo(0,-140)
+            cxt.stroke()
+            cxt.restore()
+
+            // 秒针
+            cxt.save()
+            cxt.beginPath()
+            cxt.translate(250,250)
+            cxt.lineWidth = 2
+            cxt.strokeStyle = 'skyblue'
+            cxt.rotate(oS * 6 * Math.PI/180)
+            cxt.moveTo(0,-180)
+            cxt.lineTo(0,0)
+            cxt.stroke()
+
+                // 圆心点
+                cxt.beginPath()
+                cxt.fillStyle = 'skyblue'
+                cxt.arc(0,0,5,0,2*Math.PI,false)
+                cxt.fill()
+                cxt.closePath()
+
+                // 秒针上的圆心点
+                cxt.beginPath()
+                cxt.strokeStyle = 'black'
+                cxt.fillStyle = 'skyblue'
+                cxt.arc(0,-160,5,0,2*Math.PI,false)
+                cxt.fill()
+                cxt.stroke()
+                cxt.closePath()
+            cxt.restore()
+
+        }
+
+
+    </script>
+</body>
+</html>

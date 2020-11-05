@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>audio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            display: flex;
+        }
+        ul{
+            width: 900px;
+            margin: auto;
+            display: inherit;
+        }
+        li{
+            flex: 1;
+            height: 35px;
+            border: 1px solid skyblue;
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <audio src="mp3/1.mp3" ></audio>
+    <script>
+        const aLi = document.querySelectorAll('li')
+        const oA = document.querySelector('audio')
+        oA.volume = 0.2
+        aLi.forEach(function (item,index) {
+            item.style.background = color()
+            item.onmouseenter = function () {
+                this.style.background = color()
+                oA.src = './mp3/'+(index+1)+'.mp3'
+                player(oA)
+            }
+        })
+
+        function player(oA) {
+            oA.oncanplay = function () {
+                this.play()
+            }
+        }
+
+        function color() {
+            const r = Math.floor( Math.random() * 256 )
+            const g = Math.floor( Math.random() * 256 )
+            const b = Math.floor( Math.random() * 256 )
+            return `rgb(${r},${g},${b})`
+        }
+    </script>
+</body>
+</html>

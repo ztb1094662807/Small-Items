@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>video</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            display: flex;
+        }
+        div{
+            margin: auto;
+            width: 900px;
+            height: 600px;
+            background: #222;
+        }
+        video{
+            object-fit: fill;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <video
+            autoplay
+            controls
+            muted
+            width="100%"
+            height="100%"
+            src="mp4/3-f117b.mp4"
+        >
+            <source src="mp4/3-f117b.mp4" />
+        </video>
+    </div>
+    <script>
+        const oV = document.querySelector('video')
+        oV.volume = 0.05
+
+        oV.onplay = function () {
+            //console.log( this.currentSrc )
+            console.log( '视频开始播放了' ,this.duration)
+        }
+        oV.onpause = function () {
+            console.log( '视频暂停了' )
+        }
+
+        document.onclick = function () {
+            oV.pause()
+        }
+        oV.ontimeupdate = function () {
+            console.log('持续获取时间', this.currentTime )
+        }
+        oV.onended = function () {
+            console.log( '按照播放模式决定怎么播放视频或音频',oV.ended)
+        }
+        oV.oncanplay = function () {
+            console.log('当异步请求远程资源并播放资源时 隐藏一些加载动画')
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制文本</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            display: flex;
+        }
+        canvas{
+            margin: auto;
+            background: linear-gradient( 135deg, rgb(142, 132, 133) 0%, rgb(230, 132, 110) 100% );
+        }
+    </style>
+</head>
+<body>
+    <canvas width="500" height="500"></canvas>
+    <script>
+        const oC = document.querySelector('canvas')
+        const cxt = oC.getContext('2d')
+        cxt.font = '40px 微软雅黑'
+        cxt.textBaseline = 'top'
+        cxt.strokeStyle = 'blue'
+        cxt.textBaseline = 'middle'
+        cxt.textAlign = 'center'
+        const text = '大家晚上好'
+        cxt.shadowOffsetX = 2
+        cxt.shadowOffsetY = 2
+        cxt.shadowColor = 'red'
+        cxt.shadowBlur = 0.5
+        cxt.strokeText(text,250,250)
+        console.log( cxt.measureText(text).width )
+    </script>
+</body>
+</html>

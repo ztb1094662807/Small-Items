@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh">
+	<head>
+		<title>多文件上传</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+	<body>
+		
+		<section id="wrap">
+			<h1>图片拖拽上传示范</h1>
+			<section class="area">
+				<article id="upload" draggable="true">
+					<span></span>
+					<div class="file">选择图片<form id="form" runat="server" method="post" enctype="multipart/form-data"
+					><input multiple type="file" id="imges1" name="imges1" class="upimages"/></form></div>
+				</article>
+				<article id="drag">请将图片拖到此区域</article>
+			</section>
+			<section class="info">
+				<p>已选中<span class="num" id='picLen'>0</span>张图片，共<span class="size" id='picSize'>0</span>MB</p>
+				<article>
+					<div class="file">继续选择<input multiple type="file" id="imges1" name="imges1" class="upimages"/></div>
+					<div class="upload">开始上传</div>
+				</article>
+			</section>
+			<section class="list">
+				<ul>
+				</ul>
+			</section>
+		</section>
+		<script src="js/js.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

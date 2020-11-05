@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>经纬度</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            display: flex;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="geo"></div>
+    <script>
+        // 通过第三方 地图API
+        document.onclick = function () {
+            //console.log(window.navigator.geolocation)
+            window.navigator.geolocation.watchPosition(function (position) {
+                geo.innerHTML += '经度:' + position.coords.longitude +'<br>'
+                geo.innerHTML += '纬度:' + position.coords.latitude +'<br>'
+                geo.innerHTML += '准确度:' + position.coords.accuracy +'<br>'
+                geo.innerHTML += '海拔:' + position.coords.altitude +'<br>'
+                geo.innerHTML += '海拔准确度:' + position.coords.altitudeAccuracy +'<br>'
+                geo.innerHTML += '行进方向:' + position.coords.heading +'<br>'
+                geo.innerHTML += '地面速度:' + position.coords.speed +'<br>'
+                geo.innerHTML += '时间戳:' + new Date(position.timestamp) +'<br>'
+            })
+        }
+    </script>
+</body>
+</html>

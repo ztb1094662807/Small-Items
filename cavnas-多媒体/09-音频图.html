@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>音频图</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        body{
+            overflow: hidden;
+        }
+        div{
+            position: absolute;
+            top:5%;
+            left: 2.5%;
+            font-size: 30px;
+            user-select: none;
+        }
+        canvas{
+            display: block;
+            background: linear-gradient( 135deg, rgb(142, 132, 133) 0%, rgb(230, 132, 110) 100% );
+        }
+    </style>
+</head>
+<body>
+    <div>
+        请将音频文件拖拽到此处！
+    </div>
+    <canvas> 你的浏览器不支持此技术，请更换浏览器 </canvas>
+    <script>
+        const oC = document.querySelector('canvas')
+        const cxt = oC.getContext('2d')
+        let w = oC.width = window.innerWidth
+        let h = oC.height = window.innerHeight
+        // alert("请将音频文件拖拽到此处！")
+        window.addEventListener('resize',function () {
+            w = oC.width = window.innerWidth
+            h = oC.height = window.innerHeight
+        })
+
+        document.addEventListener('dragover',function (e) {
+            e.stopPropagation()
+            e.preventDefault()
+        })
+        document.addEventListener('drop',function (e) {
+            let dataTransfer = e.dataTransfer
+            let dataAudio = dataTransfer.files[0]
+
+            let blob = new Blob([dataAudio],{type:'audio/mpeg'})
+            let url = window.URL.createObjectURL(blob)
+
+            let element = document.createElement('audio')
+            element.src = url
+            element.volume = 0.02
+            element.autoplay = 'autoplay'
+            element.play()
+            audioCanvas(element)
+
+            e.stopPropagation()
+            e.preventDefault()
+        })
+
+        let color = cxt.createLinearGradient(w/2,h/2-100,w/2,h/2+100)
+        color.addColorStop(0,'#00f')
+        color.addColorStop(0.5,'#f00')
+        color.addColorStop(1,'#0f0')
+
+        // 绘制音频 音符跳动 函数
+        function audioCanvas(element) {
+            // 创建 音频对象
+            const audioCxt = new AudioContext()
+
+            // 创建分析机  分析 拖拽进来 mp3
+            const analyser = audioCxt.createAnalyser()
+
+            // 先创建媒体元素源  通过分析机 分析 audio对象
+            const audioSrc = audioCxt.createMediaElementSource(element)
+
+
+            // 把媒体源 和 分析机 连接起来
+            audioSrc.connect(analyser)
+
+            // mp3 -> 分析器 -> 目的地(耳机)
+            audioSrc.connect( audioCxt.destination )  // destination 扬声器
+
+            // 绘制音频 (根据频率数据 绘制 矩形高度)
+            const conut = 200
+            let data = new Uint8Array(analyser.frequencyBinCount) ;// 频率数据  1024
+
+                (function draw() {
+                    cxt.clearRect(0,0,w,h)
+                    analyser.getByteFrequencyData(data)
+                    let step = Math.round( data.length / conut ) // 抽样 间隔 几个 抽取一条数据
+                    for (let i = 0; i < conut; i++) {
+                        let lineH = data[step*i]
+                        cxt.fillStyle = color
+                        cxt.fillRect(w/2+i*4,h/2,2,-lineH)
+                        cxt.fillRect(w/2+i*4,h/2,2,lineH)
+
+                        cxt.fillRect(w/2 - i*4,h/2,2,-lineH)
+                        cxt.fillRect(w/2 - i*4,h/2,2,lineH)
+                    }
+                    requestAnimationFrame(draw)
+                })();
+
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

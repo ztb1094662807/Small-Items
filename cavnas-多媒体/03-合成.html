@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>合成</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            display: flex;
+        }
+        canvas{
+            margin: auto;
+            background: linear-gradient( 135deg, rgb(142, 132, 133) 0%, rgb(230, 132, 110) 100% );
+            -background: rgba(255,0,0,1);
+        }
+    </style>
+</head>
+<body>
+    <canvas width="500" height="500"></canvas>
+    <script>
+        const oC = document.querySelector('canvas')
+        const cxt = oC.getContext('2d')
+
+        cxt.beginPath()
+        cxt.fillStyle = 'white'
+
+        cxt.arc(200,200,100,0,6.2)
+        cxt.fill()
+
+        // 合成
+        cxt.globalCompositeOperation = 'source-atop'
+        cxt.globalCompositeOperation = 'source-in'
+        cxt.globalCompositeOperation = 'source-in'
+        cxt.globalCompositeOperation = 'source-out'
+        // cxt.globalCompositeOperation = 'destination-in'
+
+        cxt.beginPath()
+        cxt.fillStyle = 'blue'
+        cxt.arc(250,200,100,0,6.2)
+        cxt.fill()
+
+    </script>
+</body>
+</html>

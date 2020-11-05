@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>表单文件上传</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    div {
+      width: 80%;
+      height: 100px;
+      background: purple;
+      margin: 50px auto;
+    }
+
+    p {
+      width: 0%;
+      height: 10px;
+      background: blue;
+    }
+  </style>
+</head>
+<body>
+  <p></p>
+  <input type="file"/>
+  <div></div>
+  <script>
+    const ipt = document.querySelector('input')
+    const div = document.querySelector('div')
+    const p = document.querySelector('p')
+    
+    ipt.addEventListener('change', function (e) {
+      // this.value是获取表单value 此值无意义
+      if (this.value) {
+        // this.files[0] 表单选择中的第0个文件对象
+        const oFile = this.files[0]
+        //console.log(oFile);
+        uploadFiles(oFile)
+        // 清空表单的值
+        this.value = ''
+      }
+      
+    })
+    
+    div.addEventListener('dragover', function (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    })
+    div.addEventListener('drop', function (e) {
+      // dataTransfer 拖拽事件的  event对象里面 数据对象
+      const dt = e.dataTransfer
+      // 获取第0个文件对象
+      //const oFile = dt.files.item(0)
+      const oFile = dt.files[0]
+      uploadFiles(oFile)
+      e.preventDefault()
+      e.stopPropagation()
+    })
+    
+    // 通过js异步上传
+    function uploadFiles(oFile) {
+      const xhr = new XMLHttpRequest()
+      // 文件上传的进度
+      xhr.upload.onprogress = function (e) {
+        // e.loaded 当前已上传的大小
+        // e.total 总文件大小
+        // 10 / 100
+        const scale = e.loaded / e.total
+        console.log(scale)
+        p.style.width = scale * window.innerWidth + 'px'
+      }
+      xhr.onload = function () {
+        console.log(xhr.responseText)
+      }
+      xhr.open('post', 'http://tanzhouweb.com/h5upload/upload.php', true)
+      // 上传文件 是通过 表单对象 去携带数据 到服务端
+      const FD = new FormData()
+      // 往表单对象里面添加数据
+      FD.append('file', oFile)
+      xhr.send(FD)
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

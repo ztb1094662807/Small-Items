@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>像素操作</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+        html,body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            display: flex;
+        }
+        canvas{
+            margin: auto;
+            background: linear-gradient( 135deg, rgb(142, 132, 133) 0%, rgb(230, 132, 110) 100% );
+            -background: rgba(255,0,0,1);
+        }
+    </style>
+</head>
+<body>
+    <canvas width="500" height="500"></canvas>
+    <script>
+        const oC = document.querySelector('canvas')
+        const cxt = oC.getContext('2d')
+
+        // 处理 canvas图像
+
+        // 创建 一块 空白 图像数据区域
+        const imgData = cxt.createImageData(100,100)
+        // 100*100的区域面积是 10000px
+        // 颜色的组成部分是 三元色 rgb   a
+        // 第一个像素 是由 4个像素点 组成的  rgba
+        // rgba 取值 都是 255
+        for (let i = 0; i < imgData.data.length; i+=4) {
+            imgData.data[i] = Math.floor( Math.random() * 256 )
+            imgData.data[i+1] = Math.floor( Math.random() * 256 )
+            imgData.data[i+2] = Math.floor( Math.random() * 256 )
+            imgData.data[i+3] = Math.floor( Math.random() * 256 )
+        }
+
+        console.log( imgData )
+        cxt.putImageData(imgData,100,100)
+
+        let res =  cxt.getImageData(100,100,100,100)
+        console.log(res);
+    </script>
+</body>
+</html>
