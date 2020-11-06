@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="Author" content="Fly">    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">    <title>Title</title>
+    <style>
+        *{ margin: 0; padding: 0; font-family:Microsoft yahei,serif;}
+        li{ list-style:none;}
+        #box{
+            width: 310px;
+            height: 75px;
+            margin: 30px auto;
+            font-size: 12px;
+            line-height: 75px;
+        }
+        #box>span{
+            float: left;
+            color: red;
+        }
+        #box ul{
+            float: left;
+            width: 100px;
+            height: 20px;
+            margin-top: 27px;
+        }
+        #box ul li{
+            float: left;
+            width: 20px;
+            height: 20px;
+            background: url("img/star.png");
+            cursor: pointer;
+        }
+        #box ul li.on{
+            background-position: 0 -27px;
+        }
+        #box p{
+            float: right;
+            width: 120px;
+            height: 70px;
+            line-height: 20px;
+            border: 1px solid #ccc;
+        }
+        #box p span{
+            display: none;
+        }
+        #box p span.on{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <span>星级评分：</span>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <p>
+            <span class="on">提示：请认真给当前文章打分</span>
+            <span>很差</span>
+            <span>较差</span>
+            <span>还行</span>
+            <span>推荐</span>
+            <span>力荐</span>
+        </p>
+    </div>
+    <script>
+
+        /*星级评分*/
+        (function(){
+            /*定义变量*/
+            let aLi = document.querySelectorAll("#box ul li");
+            let aSpan = document.querySelectorAll("#box p span");
+            let len = aLi.length;
+            let oUl = document.querySelector("#box ul");
+            let index = -1;//初始的值不是0
+
+            /*根据传入的界线，来改变HTML页面*/
+            function view(goudan){
+                /*操作小星星的样式*/
+                for (let j=0;j<len;j++){
+                    aLi[j].classList[ j>goudan?"remove":"add" ]("on");
+                }
+                /*操作p标签的显示*/
+                for (let j=0;j<aSpan.length;j++){
+                    aSpan[j].classList.remove("on");
+                }
+                aSpan[goudan+1].classList.add("on");
+            }
+
+            for(let i=0;i<len;i++){
+                /*li添加移入事件*/
+                aLi[i].onmouseenter = function(){
+                    view(i);
+                };
+
+                /*li添加点击事件，点击之后改变index的值，以便于离开之后的页面变化*/
+                aLi[i].onclick = function(){
+                    index = i;
+                };
+            }
+
+            /*离开ul触发还原*/
+            oUl.onmouseleave = function(){
+                view(index);
+            };
+        })();
+
+        /*for (let j=0;j<len;j++){
+            if (j<=i){
+                aLi[j].classList["add"]("on");
+            }else{
+                aLi[j].classList["remove"]("on");
+            }
+        }*/
+
+        /*/!*通过序号 i，可以判断前后*!/
+        /!*前面的都加名字*!/
+        for (let j=0;j<=i;j++){
+            aLi[j].classList.add("on");
+        }
+        /!*后面的都去掉名字*!/
+        for (let j=i+1;j<len;j++){
+            aLi[j].classList.remove("on");
+        }*/
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

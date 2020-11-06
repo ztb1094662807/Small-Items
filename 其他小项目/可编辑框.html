@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Title</title>
+    <style>
+        *{ margin: 0; padding: 0; font-family:Microsoft yahei,serif;}
+        li{ list-style:none;}
+        #box ul li{
+            height: 50px;
+            padding-left: 50px;
+            line-height: 50px;
+            font-size: 12px;
+            border-bottom: 1px solid red;
+        }
+        #box ul li span{
+            display: block;
+            float: left;
+        }
+        #box ul li input{
+            display: none;
+            float: left;
+            margin-top: 14px;
+            color: #999;
+        }
+        #box ul li p{
+            float: left;
+            width: 50px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            margin-top: 12px;
+            margin-left: 10px;
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+        }
+        #box ul li p.qr{
+            display: none;
+        }
+
+        #box ul li.on input{
+            display: block;
+        }
+        #box ul li.on p.qr{
+            display: block;
+        }
+        #box ul li.on span{
+            display: none;
+        }
+        #box ul li.on p.xg{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="box">
+        <ul>
+            <li>
+                <span>点击修改</span>
+                <input type="text" value="点击修改">
+                <p class="xg">修改</p>
+                <p class="qr">确认</p>
+            </li>
+            <li>
+                <span>点击修改</span>
+                <input type="text" value="点击修改">
+                <p class="xg">修改</p>
+                <p class="qr">确认</p>
+            </li>
+            <li>
+                <span>点击修改</span>
+                <input type="text" value="点击修改">
+                <p class="xg">修改</p>
+                <p class="qr">确认</p>
+            </li>
+            <li>
+                <span>点击修改</span>
+                <input type="text" value="点击修改">
+                <p class="xg">修改</p>
+                <p class="qr">确认</p>
+            </li>
+        </ul>
+    </div>
+    <script>
+
+        (function(){
+
+            /*获取元素*/
+            let aLi = document.querySelectorAll("#box ul li");
+            let aSpan = document.querySelectorAll("#box ul li span");
+            let aInput = document.querySelectorAll("#box ul li input");
+            let aXg = document.querySelectorAll("#box ul li p.xg");
+            let aQr = document.querySelectorAll("#box ul li p.qr");
+
+            let len = aXg.length;
+            for (let i = 0;i<len;i++){
+
+                /*修改按钮的点击*/
+                aXg[i].onclick = function(){
+                    aLi[i].classList.add("on");
+
+                    /*让input的内容和span保持一致*/
+                    aInput[i].value = aSpan[i].innerText;
+                };
+
+                /*确认按钮的修改*/
+                aQr[i].onclick = function(){
+                    aLi[i].classList.remove("on");
+
+                    /*让span的内容和input保持一致*/
+                    aSpan[i].innerText = aInput[i].value;
+                };
+            }
+
+
+            /*for (){
+
+            }*/
+
+
+        })();
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

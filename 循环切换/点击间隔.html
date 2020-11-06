@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>点击间隔</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        *{margin:0;padding:0;}
+        li{list-style: none}
+
+        #banner{
+            overflow: hidden;
+
+            position: relative;
+
+            width: 820px;
+            height: 380px;
+            margin: 50px auto;
+            /*border: 1px solid red;*/
+            user-select: none;
+        }
+
+        #banner div.img ul{
+            width: 1000%;
+            margin-left: 0;
+
+            transition: margin-left .5s;
+        }
+        #banner div.img ul li{
+            float: left;
+            width: 820px;
+            height: 340px;
+        }
+
+        #banner div.tab{
+            width: 100%;
+            height: 40px;
+        }
+        #banner div.tab ul{
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+        #banner div.tab ul li{
+            flex: 1;
+            height: 38px;
+
+            background-color: rgb(226,225,225);
+
+            color: #000;
+            line-height: 38px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-bottom: 2px solid transparent;
+        }
+        #banner div.tab ul li.on{
+            color: rgb(205,167,98);
+            border-bottom: 2px solid rgb(205,167,98);
+            background-color: rgb(246,245,245);
+        }
+
+        #banner div.arrow p{
+            position: absolute;
+            top: 145px;
+
+            width: 30px;
+            height: 50px;
+            background-color: rgba(0,0,0,.5);
+
+            color: #fff;
+            line-height: 50px;
+            font-size: 14px;
+            font-weight: bolder;
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: background-color .2s;
+        }
+        #banner div.arrow p.left{
+            left: 0;
+        }
+        #banner div.arrow p.right{
+            right: 0;
+        }
+        #banner div.arrow p:hover{
+            background-color: rgba(0,0,0,.8);
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <div id="banner">
+        <!--图片区域-->
+        <div class="img">
+            <ul>
+                <li><a href=""><img src="img/1.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/2.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/3.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/4.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/5.jpg" alt=""/></a></li>
+            </ul>
+        </div>
+        
+        <!--tab区域-->
+        <div class="tab">
+            <ul>
+                <li class="on">2020季前赛</li>
+                <li>夺冠庆典现已开启</li>
+                <li>真实伤害盛大登场</li>
+                <li>小小英雄</li>
+                <li>云顶之弈攻略中心</li>
+            </ul>
+        </div>
+
+        <!--左右按钮-->
+        <div class="arrow">
+            <p class="left"> < </p>
+            <p class="right"> > </p>
+        </div>
+    </div>
+
+    <script>
+
+        /*banner模块*/
+        (function(){
+            let oBanner = document.getElementById("banner");
+            let oImgUl = document.querySelector("#banner div.img ul");
+            let aTabLi = document.querySelectorAll("#banner div.tab ul li");
+            let aArrow = document.querySelectorAll("#banner div.arrow p");
+            let index = 0;//代表当前显示的序号
+            let len = aTabLi.length;
+            let timer; //用于存储定时器
+            let lastDate = 0;//用来设置点击间隔
+
+            /*aTabLi加点击事件*/
+            aTabLi.forEach(function(ele,i){
+                ele.onclick = function(){
+                    changeHTML(i);
+                };
+            });
+
+            /*左右箭头加点击事件*/
+            aArrow.forEach(function(ele,i){
+                ele.onclick = function(){
+                    /*本次的时间与上次的时间间隔必须大于1s*/
+                    let nowDate = new Date();
+                    if (nowDate-lastDate<1000)return;
+                    /*本次时间的存储*/
+                    lastDate = nowDate;
+                    /*HTML的变化*/
+                    let dachui;
+                    if (i){
+                        /*右箭头的点击*/
+                        dachui = (index + 1)%len;
+                    }else{
+                        /*左箭头的点击*/
+                        dachui = index - 1;
+                        if(dachui<0)dachui = len-1;
+                    }
+
+                    changeHTML(dachui);
+                };
+            });
+
+            /*移入到banner区域轮播停止*/
+            oBanner.onmouseenter = function(){
+                clearInterval(timer);
+            };
+            /*移除banner的区域，轮播再继续*/
+            oBanner.onmouseleave = (function x(){
+                timer = setInterval(function(){
+                    let dachui = (index + 1)%len;
+                    changeHTML(dachui);
+                },3000);
+                return x;
+            })();
+
+            /*改变HTML页面的函数*/
+            function changeHTML(goudan){
+                /*清除之前的*/
+                aTabLi[index].classList.remove("on");
+
+                /*改变 index*/
+                index = goudan;
+
+                /*显示当前的*/
+                oImgUl.style.marginLeft = "-"+index+"00%";
+                aTabLi[index].classList.add("on");
+            }
+        })();
+
+
+        /*
+        /!*自动轮播*!/
+        timerStart();
+        /!*移入到banner区域轮播停止*!/
+        oBanner.onmouseenter = function(){
+            clearInterval(timer);
+        };
+        /!*移除banner的区域，轮播再继续*!/
+        oBanner.onmouseleave = timerStart;
+
+        /!*定时器启动代码*!/
+        function timerStart(){
+            timer = setInterval(function(){
+                let dachui = (index + 1)%len;
+                changeHTML(dachui);
+            },3000);
+        }
+        */
+
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

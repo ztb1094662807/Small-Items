@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Document</title>
+  <script src=""></script>
+  <style>
+    * {
+      margin: 50px auto;
+    }
+    #canvas {
+      display: block;
+      background-color: white;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    /** @type {HTMLCanvasElement} */  
+    let canvas = document.querySelector("#canvas");
+    let ctx = canvas.getContext("2d");
+    canvas.width = canvas.height = 600
+
+    let color = ""
+    for(let i = 0 ; i < 15 ; i++ ){
+      for(let j = 0 ; j < 15 ; j++ ){
+        if((i + j) % 2 === 0){
+          color = "black"
+        }else{
+          color = "white"
+        }
+        ctx.beginPath()
+        ctx.fillStyle = color
+        ctx.fillRect(j*40, i*40, 40, 40)
+      }
+    }
+  </script>
+
+</body>
+</html>

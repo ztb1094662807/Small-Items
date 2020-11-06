@@ -1,0 +1,252 @@
+@charset "utf-8";
+body,
+html {
+  min-width: 1250px;
+}
+#banner {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 620px;
+  margin: 0 auto;
+}
+#banner ul.img {
+  position: relative;
+  width: 100%;
+  height: 620px;
+  perspective: 800px;
+  transform-style: preserve-3d;
+  /*上下移动*/
+  /*下上移动*/
+  /*左到右移动*/
+  /*淡入淡出*/
+  /*下到上的翻转*/
+  /*上到下的翻转*/
+  /*上到下的翻转*/
+}
+#banner ul.img li {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 620px;
+}
+#banner ul.img li:first-child {
+  z-index: 1;
+  background: url("../img/banners/banner1.jpg") no-repeat center top;
+}
+#banner ul.img li:last-child {
+  background: url("../img/banners/banner2.jpg") no-repeat center top;
+}
+#banner ul.img li.tTbB {
+  top: -620px;
+  animation: tTbB 0.5s;
+  animation-fill-mode: forwards;
+}
+#banner ul.img li.tTbA {
+  top: 0;
+  animation: tTbA 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes tTbB {
+  from {
+    top: -620px;
+  }
+  to {
+    top: 0;
+  }
+}
+@keyframes tTbA {
+  from {
+    top: 0;
+  }
+  to {
+    top: 620px;
+  }
+}
+#banner ul.img li.bTtA {
+  top: 0;
+  animation: bTtA 0.5s;
+  animation-fill-mode: forwards;
+}
+#banner ul.img li.bTtB {
+  top: 620px;
+  animation: bTtB 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes bTtA {
+  from {
+    top: 0;
+  }
+  to {
+    top: -620px;
+  }
+}
+@keyframes bTtB {
+  from {
+    top: 620px;
+  }
+  to {
+    top: 0;
+  }
+}
+#banner ul.img li.lTrB {
+  left: -100%;
+  animation: lTrB 0.5s;
+  animation-fill-mode: forwards;
+}
+#banner ul.img li.lTrA {
+  left: 0;
+  animation: lTrA 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes lTrB {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 0;
+  }
+}
+@keyframes lTrA {
+  from {
+    left: 0;
+  }
+  to {
+    left: 100%;
+  }
+}
+#banner ul.img li.fadeB {
+  opacity: 0;
+  animation: fadeB 0.5s;
+  animation-fill-mode: forwards;
+}
+#banner ul.img li.fadeA {
+  opacity: 1;
+  animation: fadeA 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes fadeB {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeA {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+#banner ul.img li.bTtRotateB {
+  transform: rotateX(-90deg);
+  transform-origin: 50% 50% -310px;
+  animation: bTtRotateB 0.5s;
+  animation-fill-mode: forwards;
+}
+#banner ul.img li.bTtRotateA {
+  transform: rotateX(0);
+  transform-origin: 50% 50% -310px;
+  animation: bTtRotateA 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes bTtRotateB {
+  from {
+    transform: rotateX(-90deg);
+  }
+  to {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes bTtRotateA {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(90deg);
+  }
+}
+#banner ul.img li.tTbRotateB {
+  transform: rotateX(90deg);
+  transform-origin: 50% 50% -310px;
+  animation: tTbRotateB 0.5s;
+  animation-fill-mode: forwards;
+}
+#banner ul.img li.tTbRotateA {
+  transform: rotateX(0);
+  transform-origin: 50% 50% -310px;
+  animation: tTbRotateA 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes tTbRotateB {
+  from {
+    transform: rotateX(90deg);
+  }
+  to {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes tTbRotateA {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+#banner ul.img li.centerRotateB {
+  transform: rotateX(90deg);
+  transform-origin: 50% 50%;
+  animation: centerRotateB 0.5s 0.5s;
+  animation-fill-mode: forwards;
+}
+#banner ul.img li.centerRotateA {
+  transform: rotateX(0);
+  transform-origin: 50% 50%;
+  animation: centerRotateA 0.5s;
+  animation-fill-mode: forwards;
+}
+@keyframes centerRotateB {
+  from {
+    transform: rotateX(90deg);
+  }
+  to {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes centerRotateA {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+#banner ul.tab {
+  position: absolute;
+  z-index: 99999;
+  left: 50%;
+  bottom: 10px;
+  width: 65px;
+  height: 20px;
+  margin-left: -32px;
+}
+#banner ul.tab li {
+  float: left;
+  width: 18px;
+  height: 18px;
+  margin: 0 6px ;
+  border: 1px solid #999;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #fff;
+}
+#banner ul.tab li.on {
+  border-color: #fff;
+  background-color: #000;
+}
+/*# sourceMappingURL=banner.css.map */

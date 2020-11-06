@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+    }
+    #canvas{
+      display: block;
+      margin: 100px auto;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+  let canvas = document.querySelector("#canvas")
+  let ctx = canvas.getContext("2d")
+
+  canvas.width = 800
+  canvas.height = 600
+
+  // 画一个五角星: 其实很简单的
+
+  // 整体一周的角度 Math.PI * 2 均分成五分  每份: Math.PI * 2 / 5 弧度数
+
+  // 在 300, 300 的位置画一个五角星 假设每隔角长度 是 40
+
+  // 只需要知道找到五角星的 每个角的坐标, 借助三角函数找到顶点的位置
+  // 规定: 第一个点 在右边
+
+  // 右边的一个点
+  let Point1 = {
+    x: 300 + 40,
+    y: 300
+  }
+
+  // 第二个点
+  let Point2 = {
+    x: 300 + 40 * Math.cos(Math.PI * 2 / 5),
+    y: 300 - 40 * Math.sin(Math.PI * 2 / 5)
+  }
+
+  // 第三个点
+  let Point3 = {
+    x: 300 + 40 * Math.cos(Math.PI * 2 / 5 * 2),
+    y: 300 - 40 * Math.sin(Math.PI * 2 / 5 * 2)
+  }
+
+  // 第四个点
+  let Point4 = {
+    x: 300 + 40 * Math.cos(Math.PI * 2 / 5 * 3),
+    y: 300 - 40 * Math.sin(Math.PI * 2 / 5 * 3)
+  }
+
+  // 第五个点
+  let Point5 = {
+    x: 300 + 40 * Math.cos(Math.PI * 2 / 5 * 4),
+    y: 300 - 40 * Math.sin(Math.PI * 2 / 5 * 4)
+  }
+
+  let SmallPoint1 = {
+    x: 300 + 20 * Math.cos(Math.PI * 2 / 5 * 0 + Math.PI / 5),
+    y: 300 - 20 * Math.sin(Math.PI * 2 / 5 * 0 + Math.PI / 5)
+  }
+  let SmallPoint2 = {
+    x: 300 + 20 * Math.cos(Math.PI * 2 / 5 * 1 + Math.PI / 5),
+    y: 300 - 20 * Math.sin(Math.PI * 2 / 5 * 1 + Math.PI / 5)
+  }
+  let SmallPoint3 = {
+    x: 300 + 20 * Math.cos(Math.PI * 2 / 5 * 2 + Math.PI / 5),
+    y: 300 - 20 * Math.sin(Math.PI * 2 / 5 * 2 + Math.PI / 5)
+  }
+  let SmallPoint4 = {
+    x: 300 + 20 * Math.cos(Math.PI * 2 / 5 * 3 + Math.PI / 5),
+    y: 300 - 20 * Math.sin(Math.PI * 2 / 5 * 3 + Math.PI / 5)
+  }
+  let SmallPoint5 = {
+    x: 300 + 20 * Math.cos(Math.PI * 2 / 5 * 4 + Math.PI / 5),
+    y: 300 - 20 * Math.sin(Math.PI * 2 / 5 * 4 + Math.PI / 5)
+  }
+
+
+
+  ctx.moveTo(Point1.x, Point1.y)
+  ctx.lineTo(SmallPoint1.x, SmallPoint1.y)
+  ctx.lineTo(Point2.x, Point2.y)
+  ctx.lineTo(SmallPoint2.x, SmallPoint2.y)
+  ctx.lineTo(Point3.x, Point3.y)
+  ctx.lineTo(SmallPoint3.x, SmallPoint3.y)
+  ctx.lineTo(Point4.x, Point4.y)
+  ctx.lineTo(SmallPoint4.x, SmallPoint4.y)
+  ctx.lineTo(Point5.x, Point5.y)
+  ctx.lineTo(SmallPoint5.x, SmallPoint5.y)
+  ctx.lineTo(Point1.x, Point1.y)
+  // 划线
+  ctx.stroke()
+
+  function drawStar( ctx , r , R , x , y , rot = 0){
+    ctx.beginPath();
+    for(let i = 0 ; i < 5 ; i ++){
+      ctx.lineTo(Math.cos((18+72*i - rot)/180*Math.PI) * R + x ,- Math.sin((18+72*i - rot )/180*Math.PI) * R + y);
+      ctx.lineTo(Math.cos((54+72*i - rot)/180*Math.PI) * r + x ,- Math.sin((54+72*i - rot )/180*Math.PI) * r + y);
+    }
+    ctx.closePath();
+
+    ctx.fill();
+    ctx.stroke();
+  }
+  let deg = 0
+  drawStar(ctx, 50, 100, 500, 500, deg)
+
+  function render() {
+    requestAnimationFrame(render)
+    ctx.clearRect(0, 0, 800, 600)
+    drawStar(ctx, 50, 100, 500, 500, deg+=1)
+  }
+
+  render()
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+    }
+    #canvas{
+      display: block;
+      margin: 0 auto;
+      border: 1px solid black;
+      background-color: green;
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+  let canvas = document.querySelector("#canvas")
+  let ctx = canvas.getContext("2d")
+
+  canvas.width = 800
+  canvas.height = 600
+
+  let card = new Image()
+  card.src = "./timg.jfif"
+
+  // 画卡牌的操作 : 只需要知道卡牌的位置
+  /**
+   *
+   * @param x 卡的位置x
+   * @param y 卡的位置y
+   */
+  // function drawCard(x, y) {
+  //   ctx.drawImage(card, x, y, 150, 200)
+  //   ctx.strokeRect(x, y, 150, 200)
+  // }
+  // 整体渲染
+  // 在绘制的过程中调整x和y的位置
+  // let cardObject1 = {
+  //   x: 500,
+  //   y: 0,
+  //   vy: 0.1,
+  //   vx: -2,
+  //   drawCard: function () {
+  //     ctx.drawImage(card, this.x, this.y, 150, 200)
+  //     ctx.strokeRect(this.x, this.y, 150, 200)
+  //   },
+  //   update: function () {
+  //     this.x += this.vx
+  //     this.y += this.vy
+  //     this.vy += 0.1
+  //     if(this.y >= 450 ){
+  //       this.vy *= -.8
+  //     }
+  //   }
+  // }
+  // let cardObject2 = {
+  //   x: 200,
+  //   y: 0,
+  //   vy: 0.1,
+  //   vx: 2,
+  //   drawCard: function () {
+  //     ctx.drawImage(card, this.x, this.y, 150, 200)
+  //     ctx.strokeRect(this.x, this.y, 150, 200)
+  //   },
+  //   update: function () {
+  //     this.x += this.vx
+  //     this.y += this.vy
+  //     this.vy += 0.1
+  //     if(this.y >= 450 ){
+  //       this.vy *= -.8
+  //     }
+  //   }
+  // }
+
+  // 手动创建对象无数次: 写一个构造函数批量创建对象, 批量的渲染
+
+
+  class Card{
+    constructor(){
+      this.x = Math.random() * 650
+      this.y = 0
+      this.vy = 0.1
+      this.vx = Math.random()*4 - 2
+    }
+    drawCard() {
+      ctx.drawImage(card, this.x, this.y, 150, 200)
+      ctx.strokeRect(this.x, this.y, 150, 200)
+    }
+    update() {
+      this.x += this.vx
+      this.y += this.vy
+      this.vy += 0.1
+      if(this.y > 400 ){
+        this.y = 400
+        this.vy *= -.8
+      }
+    }
+  }
+
+  // let cardObject = new Card()
+  let cardArr = []
+  // for(let i = 0; i < 10; i++){
+  //   cardArr.push(new Card())
+  // }
+  setInterval(function () {
+    cardArr.push(new Card())
+  }, 500)
+
+  function render(){
+    requestAnimationFrame(render)
+    cardArr.forEach(card => {
+      // 绘制
+      card.drawCard()
+      // 调整状态
+      card.update()
+    })
+  }
+
+  render()
+
+  // 结合面向对象实现这样的类似的效果
+
+  // 假如, 我想不停的生成卡片怎么操作, 每隔 500ms生成一张
+
+
+</script>
+</body>
+</html>

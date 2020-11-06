@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+    }
+    canvas{
+      position: absolute;
+      display: block;
+      background-color: #000;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    let canvas = document.querySelector("#canvas")
+    let ctx = canvas.getContext("2d")
+    let w = canvas.width = window.innerWidth
+    let h = canvas.height = window.innerHeight
+
+    window.onload = window.onresize = function(){
+      w = canvas.width = window.innerWidth
+      h = canvas.height = window.innerHeight
+      ctx.globalCompositeOperation = "lighter"//数量叠加，颜色高亮
+    }
+    /*
+      鼠标在canvas上面滑动的时候生成小球: 小球缓慢消失
+
+      小球是多个小球: 统一一个数组控制所有的小球
+    */
+    // let ball = {
+    //   x: 300,
+    //   y: 300,
+    //   color: "#f00",
+    // }
+    class Ball{
+      constructor(x, y){
+        this.x = x
+        this.y = y
+        this.vx = Math.random() * 4 - 2
+        this.vy = Math.random() * 4 - 2
+        this.R = 20
+        this.r = 10
+        this.vr = 0.97
+
+        // 当前这个五角星的旋转角度
+        this.rot = 0
+        this.vRot = Math.random() * 20 - 10
+
+        // 小球是否死亡
+        this.dead = false
+
+        this.color = "#" + Math.random().toString(16).slice(2, 8)//Math.random().toString(16) 0-1之前随机生成16进制 .slice(2, 8)从第2位后面剪取到第8位
+      }
+      // 绘制小球
+      draw(ctx){
+        ctx.beginPath()
+        ctx.fillStyle = this.color
+        // ctx.arc(this.x, this.y, this.r, 0, Math.PI*2)
+        // ctx.fill()
+        for(let i = 0 ; i < 5 ; i ++){
+          ctx.lineTo(
+            Math.cos((18+72*i - this.rot)/180*Math.PI) * this.R + this.x ,- Math.sin((18+72*i - this.rot )/180*Math.PI) * this.R + this.y)
+          ctx.lineTo(
+            Math.cos((54+72*i - this.rot)/180*Math.PI) * this.r + this.x ,- Math.sin((54+72*i - this.rot )/180*Math.PI) * this.r + this.y)
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+      // 小球状态更新
+      update(){
+        this.x += this.vx
+        this.y += this.vy
+        this.r *= this.vr
+        this.R = this.r * 2
+        this.rot += this.vRot
+        if(this.r < 1){
+          this.dead = true
+        }
+      }
+    }
+
+    // 统一存放所有的小球
+    let ballList = []
+    // let ball = new Ball(300, 300)
+    // for(let i = 0;i < 10;i++){
+    //   ballList.push(new Ball(300, 300))
+    // }
+
+    function render(){
+      requestAnimationFrame(render)
+      ctx.clearRect(0, 0, w, h)
+      ballList.forEach(ball => {
+        ball.draw(ctx)
+        ball.update()
+      })
+
+      // 让小球数组只保留活着的小球
+      ballList = ballList.filter(function(ball){
+        return !ball.dead
+      })
+
+    }
+
+    render()
+
+    // 鼠标滑过之处, 产生小球
+
+    canvas.onmousemove = function(e){
+      let pos = {x: e.clientX, y: e.clientY}
+      ballList.push(new Ball(pos.x, pos.y))
+      console.log(ballList.length)
+    }
+
+
+  </script>
+</body>
+</html>

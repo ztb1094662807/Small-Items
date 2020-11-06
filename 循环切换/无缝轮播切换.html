@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>无缝轮播切换</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        *{margin:0;padding:0;}
+        li{list-style: none}
+
+        #banner{
+            overflow: hidden;
+
+            position: relative;
+
+            width: 820px;
+            height: 380px;
+            margin: 50px auto;
+            user-select: none;
+        }
+
+        #banner div.img ul{
+            width: 1000%;
+            margin-left: -100%;
+
+            transition: margin-left .3s;
+        }
+        #banner div.img ul li{
+            float: left;
+            width: 820px;
+            height: 340px;
+        }
+
+        #banner div.tab{
+            width: 100%;
+            height: 40px;
+        }
+        #banner div.tab ul{
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+        #banner div.tab ul li{
+            flex: 1;
+            height: 38px;
+
+            background-color: rgb(226,225,225);
+
+            color: #000;
+            line-height: 38px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-bottom: 2px solid transparent;
+        }
+        #banner div.tab ul li.on{
+            color: rgb(205,167,98);
+            border-bottom: 2px solid rgb(205,167,98);
+            background-color: rgb(246,245,245);
+        }
+
+        #banner div.arrow p{
+            position: absolute;
+            top: 145px;
+
+            width: 30px;
+            height: 50px;
+            background-color: rgba(0,0,0,.5);
+
+            color: #fff;
+            line-height: 50px;
+            font-size: 14px;
+            font-weight: bolder;
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: background-color .2s;
+        }
+        #banner div.arrow p.left{
+            left: 0;
+        }
+        #banner div.arrow p.right{
+            right: 0;
+        }
+        #banner div.arrow p:hover{
+            background-color: rgba(0,0,0,.8);
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <div id="banner">
+        <!--图片区域-->
+        <div class="img">
+            <ul>
+                <li><a href=""><img src="img/5.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/1.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/2.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/3.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/4.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/5.jpg" alt=""/></a></li>
+                <li><a href=""><img src="img/1.jpg" alt=""/></a></li>
+            </ul>
+        </div>
+        
+        <!--tab区域-->
+        <div class="tab">
+            <ul>
+                <li class="on">2020季前赛</li>
+                <li>夺冠庆典现已开启</li>
+                <li>真实伤害盛大登场</li>
+                <li>小小英雄</li>
+                <li>云顶之弈攻略中心</li>
+            </ul>
+        </div>
+
+        <!--左右按钮-->
+        <div class="arrow">
+            <p class="left"> < </p>
+            <p class="right"> > </p>
+        </div>
+    </div>
+
+    <script>
+
+        (function(){
+            let oBanner = document.getElementById("banner");
+            let oImgUl = document.querySelector("#banner div.img ul");
+            let aArrow = document.querySelectorAll("#banner div.arrow p");
+            let aTabLi = document.querySelectorAll("#banner div.tab ul li");
+            let len = aTabLi.length;
+            let index = 0; //表明显示的是第几张图片
+            let lastDate = 0; //用来存储上次点击的时间
+            let timer; //用于存储定时器
+
+            /*按钮的点击*/
+            aTabLi.forEach(function (node,i) {
+                node.onclick = function(){
+                    changeHTML(i);
+                };
+            });
+
+            /*左右箭头点击事件*/
+            aArrow.forEach(function (node,i) {
+                node.onclick = function(){
+                    /*控制点击间隔*/
+                    let nowDate = new Date();
+                    if (nowDate-lastDate<350)return;
+                    /*本次时间的存储*/
+                    lastDate = nowDate;
+
+                    /*判断是左箭头还是右箭头，决定+1还是-1*/
+                    changeHTML(index + (i?1:-1));
+                };
+            });
+
+            /*定时器事件*/
+            /*移入到banner区域轮播停止*/
+            oBanner.onmouseenter = function(){
+                clearInterval(timer);
+            };
+            /*移除banner的区域，轮播再继续*/
+            oBanner.onmouseleave = (function x(){
+                timer = setInterval(function(){
+                    changeHTML(index + 1);
+                },1000);
+                return x;
+            })();
+
+            /*操作HTML页面变化的函数*/
+            function changeHTML(i){
+                /*改变ul的位置*/
+                oImgUl.style.transition = "margin-left .3s";
+                oImgUl.style.marginLeft = "-"+(i+1)+"00%";
+
+                /*如果i是5，那么等待左右切换的动画完成之后，要瞬间回到初始位置*/
+                if (i === len || i === -1){
+                    let left = i===len?"-100%":"-500%";
+                    setTimeout(function(){
+                        oImgUl.style.transition = "margin-left 0s";
+                        oImgUl.style.marginLeft = left;
+                    },320);
+                }
+
+                /*改变tab的样式*/
+                /*清除之前的*/
+                aTabLi[index].classList.remove("on");
+
+                /*改变 index*/
+                index = i;
+                index %= len;
+                if(index<0)index = len-1;
+
+                /*显示当前的*/
+                aTabLi[index].classList.add("on");
+            }
+
+        })();
+
+
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
